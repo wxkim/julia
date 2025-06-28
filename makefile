@@ -1,16 +1,36 @@
 TARGET = julia
 CC = gcc
-CFLAGS = -Wall -Wextra -I"C:/msys62/include" -I"C:/msys64/include/GL" 
-IFLAGS = -I./include -Iinc
-LDFLAGS = -lopengl32 -lglu32 -lfreeglut
-SRC = src/main.C
-OUT = julia.exe
+CFLAGS = -Wall -Wextra 
 
+UNAME_S := $(shell uname -s)
+
+ifeq ($(UNAME_S),Linux)
+    OS_TYPE = LINUX
+else ifeq ($(UNAME_S),Darwin)
+    OS_TYPE = MACOS
+else ifeq ($(findstring CYGWIN_NT,$(UNAME_S)),CYGWIN_NT)
+    OS_TYPE = CYGWIN
+else ifeq ($(findstring MINGW,$(UNAME_S)),MINGW)
+    OS_TYPE = MINGW
+else
+    OS_TYPE = UNKNOWN_UNIX
+endif
+
+ifeq ($(OS_TYPE),MINGW)
+    IFLAGS = -I"C:/msys64/include" -I"C:/msys64/include/GL" -I./include -Iinc
+    LDFLAGS = -lopengl32 -lglu32 -lfreeglut
+    OUT = julia.exe
+else
+    IFLAGS = -I./include -Iinc
+    LDFLAGS = -lGL -lGLU -lglut
+    OUT = julia
+endif
+
+SRC = src/main.c
 
 
 all:
-
-	$(CC) $(CFLAGS) $(IFLAGS) $(SRC) -o $(TARGET).exe $(LDFLAGS)
+	$(CC) -Wall -Wextra $(IFLAGS) $(SRC) -o $(OUT) $(LDFLAGS)
 
 run:
 

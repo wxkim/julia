@@ -1,19 +1,29 @@
 #include "math.h"
 #include <stdint.h>
 
-double absolute(double x) {
-    union {
-        double value;
-        uint64_t bits;
-    } dec;
+/*
+    typedef union {
+            double val;
+            uint64_t bits;
+    } flop_t;
+*/
 
-    dec.value = x;
+double absolute(double x) {
+    flop_t dec;
+
+    dec.val = x;
     dec.bits &= ~(0x01 << 63);
 
-    return dec.value;
+    return dec.val;
 }
 
 double square_root(double x) {
+    flop_t in, out;
+
+    in.val = x;
+
+
+    if ((in.bits >> 63) == 1 && (in.bits << 1)) kill(getpid(), SIGTERM);
 
 }
 
