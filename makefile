@@ -1,6 +1,7 @@
 TARGET = julia
 CC = gcc
 CFLAGS = -Wall -Wextra 
+IGNOREFLAGS = -Wno-unused-parameter -Wno-unused-variable
 
 UNAME_S := $(shell uname -s)
 
@@ -26,11 +27,12 @@ else
     OUT = julia
 endif
 
-SRC = src/main.c
+SRC = src/main.c src/julia.c src/complex.c src/math.c
 
+# IGNOREFLAGS ON
 
 all:
-	$(CC) -Wall -Wextra $(IFLAGS) $(SRC) -o $(OUT) $(LDFLAGS)
+	$(CC) $(CFLAGS) $(IGNOREFLAGS) $(IFLAGS) $(SRC) -o $(OUT) $(LDFLAGS)
 
 run:
 

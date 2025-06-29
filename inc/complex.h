@@ -4,14 +4,12 @@
 #include "math.h"
 #include "stdint.h"
 
-typedef struct {
-    double re;
-    double im;
+typedef struct __attribute__((packed)){
+    double re, im;
 } complex_t;
 
-typedef struct {
-    double mag;
-    double phase;
+typedef struct __attribute__((packed)){
+    double mag, phase;
 } phasor_t;
 
 complex_t phasor_to_complex(phasor_t p);

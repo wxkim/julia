@@ -1,4 +1,4 @@
-# Julia 
+# Julia
 
 ## Fractal Renderer (Minimal C/OpenGL)
 
@@ -8,12 +8,11 @@ Developed on Windows 11 Pro (x86_64).
 
 ## Features
 
-- Manual implementation of `sin`, `cos`, `tan`, `sqrt`, `abs`, and other math utilities
-- Custom complex number type and operations 
+- Custom math back end (supports complex numbers, trig, and rational algorithms)
+- Custom complex number type and operations
 - Polar/phasor support for rotation and scaling
 - OpenGL rendering via GLUT
-- Abstracted
-
+- Abstracted for multi platform
 
 ## Build and Run
 
@@ -22,16 +21,19 @@ Make sure you have OpenGL and GLUT development libraries installed. Install `mak
 > If you are on Windows, use MINGW64.
 
 ### To build:
+
 ```bash
 make
 ```
 
 ### To run:
+
 ```bash
 make run
 ```
 
 ### To clean:
+
 ```bash
 make clean
 ```
