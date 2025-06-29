@@ -6,6 +6,10 @@
 #include "main.h"
 
 int main(int argc, char** argv) {
-    printf("Hello.");
+    
+    
+    
+    printf("");
+
     return 0;
 }

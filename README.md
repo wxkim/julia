@@ -41,20 +41,30 @@ make clean
 ## Directory Structure
 
 ```.
+.
 ├── README.md
 ├── makefile
+├── core
+│   ├── core.h
+│   └── error.h
+├── display
+│   ├── buffer.c
+│   ├── buffer.h
+│   ├── color.c
+│   ├── color.h
+│   ├── render.c
+│   └── render.h
 ├── inc
 │   ├── complex.h
-│   ├── error.h
 │   ├── julia.h
 │   ├── main.h
 │   └── math.h
 └── src
     ├── complex.c
-    ├── error.c
     ├── julia.c
     ├── main.c
     └── math.c
 
-3 directories, 13 files
+5 directories, 19 files
+
 ```

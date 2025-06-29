@@ -1,7 +1,5 @@
 #include "GL/glut.h"
-
 #include "stdio.h"
-
 #include "complex.h"
-
-#include "core/core.h"
+#include "core.h"
+#include "display/render.h"

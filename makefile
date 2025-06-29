@@ -2,6 +2,7 @@ TARGET = julia
 CC = gcc
 CFLAGS = -Wall -Wextra 
 IGNOREFLAGS = -Wno-unused-parameter -Wno-unused-variable
+INFLAGS = -Iinclude -Idisplay -Icore
 
 UNAME_S := $(shell uname -s)
 
@@ -32,7 +33,7 @@ SRC = src/main.c src/julia.c src/complex.c src/math.c
 # IGNOREFLAGS ON
 
 all:
-	$(CC) $(CFLAGS) $(IGNOREFLAGS) $(IFLAGS) $(SRC) -o $(OUT) $(LDFLAGS)
+	$(CC) $(CFLAGS) $(INFLAGS) $(IGNOREFLAGS) $(IFLAGS) $(SRC) -o $(OUT) $(LDFLAGS)
 
 run:
 

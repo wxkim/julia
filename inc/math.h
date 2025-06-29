@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-#include "core/core.h"
+#include "../core/core.h"
 
 #define PI      3.141592653589793238
 #define TAU     6.283185307179586476
