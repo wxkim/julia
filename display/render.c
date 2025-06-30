@@ -1,17 +1,15 @@
 #include "render.h"
 
-static int window_width, window_length;
+static int win_width = 800;
+static int win_height = 600;
 
 void render_init(int width, int height) {
     win_width = width;
     win_height = height;
-    glClearColor(0.0F, 0.0F, 0.0F, 1.0F);
-    buffer_init(width, height);
-    
+    glClearColor(0.2f, 0.2f, 0.25f, 1.0f); // light blue-gray
 }
 
-
-void render_frame(void) {
+void render_resize(int width, int height) {
     win_width = width;
     win_height = height;
 
@@ -20,17 +18,22 @@ void render_frame(void) {
     glLoadIdentity();
     gluOrtho2D(0, width, 0, height);
     glMatrixMode(GL_MODELVIEW);
-    buffer_resize(width, height);
 }
 
-
-void render_resize(int width, int height) {
+void render_frame(void) {
     glClear(GL_COLOR_BUFFER_BIT);
 
-    glRasterPos2i(0, 0);
-    glDrawPixels(win_width, win_height, GL_RGB, GL_UNSIGNED_BYTE, buffer_pixels());
+    glColor3f(1.0f, 0.0f, 0.0f);
+    glBegin(GL_QUADS);
+        glVertex2f(win_width/2 - 50, win_height/2 - 50);
+        glVertex2f(win_width/2 + 50, win_height/2 - 50);
+        glVertex2f(win_width/2 + 50, win_height/2 + 50);
+        glVertex2f(win_width/2 - 50, win_height/2 + 50);
+    glEnd();
 
     glutSwapBuffers();
 }
+
+
 
 
