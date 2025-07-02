@@ -2,7 +2,7 @@
 
 ## Fractal Renderer (Minimal C/OpenGL)
 
-This project renders Julia fractals using custom-implemented math functions in C, avoiding standard libraries except OpenGL for visualization. It is intended for low-level exploration of complex arithmetic, numerical methods, and graphics.
+This project renders Julia fractals using custom-implemented math functions in C, avoiding standard libraries except OpenGL for visualization.
 
 Developed on Windows 11 Pro (x86_64).
 
