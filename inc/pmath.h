@@ -37,7 +37,8 @@ typedef enum {
         DENORMAL_VALUE,
         PLUS_INFINITY,
         MINUS_INFINITY,
-        NOT_A_NUMBER
+        QUIET_NAN,
+        SIGNALING_NAN
 } fp_reserved_status_t;
 
 static fp_reserved_status_t check_reserve_value(double x);
@@ -47,12 +48,6 @@ double reverse_absolute(double x);
 double square_root(double x);
 double inverse_square_root(double x);
 double base_power(double base, int exp);
-
-double reduce_range_radians(double rad);
-double reduce_range_degrees(double rad);
-
-static inline double dg_to_rad(double dg);
-static inline double rad_to_dg(double rad);
 
 double trig_sine(double x);
 double trig_cosine(double x);

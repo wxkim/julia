@@ -17,7 +17,6 @@ phasor_t complex_to_phasor(complex_t c);
 
 complex_t complex_add(complex_t a, complex_t b);
 complex_t complex_mult(complex_t a, complex_t b);
-phasor_t phasor_add(phasor_t m, phasor_t n);
 
 void complex_conjugate(complex_t *c);
 
