@@ -37,9 +37,19 @@ static fp_reserved_status_t check_reserve_value(const double *restrict x) {
 }
 
 double absolute(double x) {
-    flop64_t dec;
-    dec.val = x;
-    dec.bits &= ~SIGN_BIT_MASK;
+    flop64_t dec = {
+        .val = x;
+        .bits &= ~SIGN_BIT_MASK;
+    };
+    
+    return dec.val;
+}
+
+double reverse_absolute(double x) {
+    flop64_t dec = {
+        .val = x;
+        .bits &= ^= SIGN_BIT_MASK;
+    };
 
     return dec.val;
 }

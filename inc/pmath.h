@@ -1,5 +1,5 @@
-#ifndef MATH_H
-#define MATH_H
+#ifndef PMATH_H
+#define PMATH_H
 
 #include <stdint.h>
 
@@ -43,6 +43,7 @@ typedef enum {
 static fp_reserved_status_t check_reserve_value(const double *restrict x);
 
 double absolute(double x);
+double reverse_absolute(double x);
 double square_root(const double *restrict x);
 double inverse_square_root(double x);
 double base_power(double base, int exp);
