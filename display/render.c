@@ -6,7 +6,7 @@ static int win_height = 600;
 void render_init(int width, int height) {
     win_width = width;
     win_height = height;
-    glClearColor(0.2f, 0.2f, 0.25f, 1.0f); // light blue-gray
+    glClearColor(0.2f, 0.2f, 0.25f, 1.0f); 
 }
 
 void render_resize(int width, int height) {

@@ -11,9 +11,9 @@ static void init_lookup_table(void) {
     }
 }
 
-static fp_reserved_status_t check_reserve_value(const double *restrict x) {
+static fp_reserved_status_t check_reserve_value(double x) {
     flop64_t in;
-    in.val = *x;
+    in.val = x;
     
     uint8_t sign        = (in.bits & SIGN_BIT_MASK) >> 63;
     uint16_t exponent   = (in.bits & EXPN_BIT_MASK) >> 52;
@@ -37,26 +37,22 @@ static fp_reserved_status_t check_reserve_value(const double *restrict x) {
 }
 
 double absolute(double x) {
-    flop64_t dec = {
-        .val = x;
-        .bits &= ~SIGN_BIT_MASK;
-    };
-    
-    return dec.val;
+    flop64_t f;
+    f.val = x;
+    f.bits &= ~SIGN_BIT_MASK;  
+    return f.val;
 }
 
 double reverse_absolute(double x) {
-    flop64_t dec = {
-        .val = x;
-        .bits &= ^= SIGN_BIT_MASK;
-    };
-
-    return dec.val;
+    flop64_t f;
+    f.val = x;
+    f.bits ^= ~SIGN_BIT_MASK;  
+    return f.val;
 }
 
-double square_root(const double *restrict x) {
+double square_root(double x) {
     flop64_t seed;
-    double val = *x;
+    double val = x;
 
     if (check_reserve_value(x) != NORMAL_VALUE) _exit(0);
 

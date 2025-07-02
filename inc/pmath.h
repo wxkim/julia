@@ -40,11 +40,11 @@ typedef enum {
         NOT_A_NUMBER
 } fp_reserved_status_t;
 
-static fp_reserved_status_t check_reserve_value(const double *restrict x);
+static fp_reserved_status_t check_reserve_value(double x);
 
 double absolute(double x);
 double reverse_absolute(double x);
-double square_root(const double *restrict x);
+double square_root(double x);
 double inverse_square_root(double x);
 double base_power(double base, int exp);
 
@@ -57,6 +57,6 @@ static inline double rad_to_dg(double rad);
 double trig_sine(double x);
 double trig_cosine(double x);
 double trig_tangent(double x);
-double arc_tangent(double y, double x);
+double trig_arc_tangent(double y, double x);
 
 #endif 
