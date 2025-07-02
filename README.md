@@ -8,7 +8,7 @@ Developed on Windows 11 Pro (x86_64).
 
 ## Features
 
-- Custom math back end (supports complex numbers, trig, and rational algorithms)
+- Custom math back end (supports complex numbers, and rational algorithms)
 - Custom complex number type and operations
 - Polar/phasor support for rotation and scaling
 - OpenGL rendering via GLUT

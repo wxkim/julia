@@ -3,10 +3,15 @@
 
 #include <stdint.h>
 
+
 #include "../core/core.h"
 
+#define HALFPI  1.570796326794896619
 #define PI      3.141592653589793238
 #define TAU     6.283185307179586476
+
+#define LUT_SIZE 2048
+#define LUT_STEP (TAU / LUT_SIZE)
 
 #define NAN     0.0 / 0.0
 #define EPSILON 1E-10

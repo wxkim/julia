@@ -1,15 +1,19 @@
-#include "math.h"
+#include "pmath.h"
+#include <math.h>
+
+
+static double LOOKUP_TABLE[LUT_SIZE + 1];
+
+__attribute__((constructor)) 
+static void init_lookup_table(void) {
+    for (int i = 0; i <= LUT_SIZE; ++i) {
+        LOOKUP_TABLE[i] = sin(i * LUT_STEP);
+    }
+}
 
 static fp_reserved_status_t check_reserve_value(const double *restrict x) {
     flop64_t in;
     in.val = *x;
-
-    /*
-        exponent 0 and fraction 0 = +/-zero
-        exponent normal = normal value
-        exponent 0b111...1 and fraction 0 = +/- infinity
-        exponent 0b111...1 and fraction not 0 = nan
-    */
     
     uint8_t sign        = (in.bits & SIGN_BIT_MASK) >> 63;
     uint16_t exponent   = (in.bits & EXPN_BIT_MASK) >> 52;
@@ -44,7 +48,6 @@ double square_root(const double *restrict x) {
     flop64_t seed;
     double val = *x;
 
-    // reserve value catch cases here
     if (check_reserve_value(x) != NORMAL_VALUE) _exit(0);
 
     seed.val = val;
@@ -70,12 +73,14 @@ double inverse_square_root(double x) {
     cnv.bits = i;
     double res = cnv.val;
 
-    return res = res * (1.5 - xHalf * res * res);
+    res = res * (1.5 - xHalf * res * res);
+    res = res * (1.5 - xHalf * res * res);
 
+    return res = res * (1.5 - xHalf * res * res);
 }
 
 double base_power(double base, int exp) {
-    double res;
+    double res = 1.0;
 
     int negate = (exp < 0);
     if (negate) exp = -exp;
@@ -91,37 +96,52 @@ double base_power(double base, int exp) {
 }
 
 
-double reduce_range_radians(double rad) {
-    return 0;
+inline double reduce_range_radians(double rad) {
+    rad -= TAU * (int) (rad / TAU);
+    return rad < 0 ? rad + TAU : rad;
 }
 
-
-
-double reduce_range_degrees(double rad) {
-    return 0;
+inline double reduce_range_degrees(double deg) {
+    deg -= 360 * (int) (deg / 360);
+    return deg < 0 ? deg + 360 : deg;
 }
 
-static inline double dg_to_rad(double dg) {
+inline double dg_to_rad(double dg) {
     return dg * PI / 180;
 }
 
-static inline double rad_to_dg(double rad) {
+inline double rad_to_dg(double rad) {
     return rad * 180 / PI;
 }
 
 
-double trig_sine(double x) {
-    return 0;
+double trig_sine(double angle_rad) {
+    angle_rad = reduce_range_radians(angle_rad);
+
+    double index_f = angle_rad / LUT_STEP;
+    int index = (int)index_f;
+
+    double frac = index_f - index;
+    if (index >= LUT_SIZE) {
+        index = LUT_SIZE - 1;
+        frac = 1.0;  
+    }
+    double y0 = LOOKUP_TABLE[index];
+    double y1 = LOOKUP_TABLE[index + 1];
+
+    return y0 + frac * (y1 - y0);
 }
 
-double trig_cosine(double x) {
-    return 0;
+double trig_cosine(double angle_rad) {
+    return trig_sine(angle_rad + HALFPI);
 }
 
-double trig_tangent(double x) {
-    return 0;
+double trig_tangent(double angle_rad) {
+    double cos = trig_cosine(angle_rad);
+    if (absolute(cos) < 1e-8) return PLUS_INFINITY;
+    return trig_sine(angle_rad) / cos;
 }
 
-double trig_arc_tangent(double y, double x) {
-    return 0;
+inline double trig_arc_tangent(double y, double x) {
+    return atan2(y,x);
 }
