@@ -11,12 +11,12 @@ static void init_lookup_table(void) {
     }
 }
 
-static fp_reserved_status_t check_reserve_value(double x) {
+fp_reserved_status_t check_reserve_value(double x) {
     flop64_t in;
     in.val = x;
     
-    uint8_t sign        = (uint8_t)(in.bits & SIGN_BIT_MASK) >> 63;
-    uint16_t exponent   = (uint16_t)(in.bits & EXPN_BIT_MASK) >> 52;
+    uint8_t sign        = (uint8_t)((in.bits & SIGN_BIT_MASK) >> 63);
+    uint16_t exponent   = (uint16_t)((in.bits & EXPN_BIT_MASK) >> 52);
     uint64_t mantissa   = (uint64_t)(in.bits & MANT_BIT_MASK);
 
     if (exponent == 0) {
@@ -36,9 +36,26 @@ static fp_reserved_status_t check_reserve_value(double x) {
             return ((mantissa & qnan_bit) != 0ULL) ? QUIET_NAN : SIGNALING_NAN;
         }
     }
-    }
-
+    
     return NORMAL_VALUE;
+}
+
+static inline double reduce_range_radians(double rad) {
+    rad -= TAU * (int) (rad / TAU);
+    return rad < 0 ? rad + TAU : rad;
+}
+
+static inline double reduce_range_degrees(double deg) {
+    deg -= 360 * (int) (deg / 360);
+    return deg < 0 ? deg + 360 : deg;
+}
+
+static inline double dg_to_rad(double dg) {
+    return dg * PI / 180;
+}
+
+static inline double rad_to_dg(double rad) {
+    return rad * 180 / PI;
 }
 
 double absolute(double x) {
@@ -141,20 +158,3 @@ double trig_arc_tangent(double y, double x) {
     return atan2(y,x);
 }
 
-inline double reduce_range_radians(double rad) {
-    rad -= TAU * (int) (rad / TAU);
-    return rad < 0 ? rad + TAU : rad;
-}
-
-inline double reduce_range_degrees(double deg) {
-    deg -= 360 * (int) (deg / 360);
-    return deg < 0 ? deg + 360 : deg;
-}
-
-inline double dg_to_rad(double dg) {
-    return dg * PI / 180;
-}
-
-inline double rad_to_dg(double rad) {
-    return rad * 180 / PI;
-}

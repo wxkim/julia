@@ -41,7 +41,7 @@ typedef enum {
         SIGNALING_NAN
 } fp_reserved_status_t;
 
-static fp_reserved_status_t check_reserve_value(double x);
+fp_reserved_status_t check_reserve_value(double x);
 
 double absolute(double x);
 double reverse_absolute(double x);

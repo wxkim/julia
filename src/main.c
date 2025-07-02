@@ -5,8 +5,8 @@
 
 #include "main.h"
 
-int width = 800;
-int height = 600;
+int width = 1280;
+int height = 720;
 
 void display_wrapper() {
     render_frame();
@@ -18,9 +18,15 @@ void reshape_wrapper(int w, int h) {
 
 int main(int argc, char **argv) {
     glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE);
+    glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE);
     glutInitWindowSize(width, height);
-    glutCreateWindow("Julia Fractal - Test");
+    int awin = glutCreateWindow("Julia Fractal");
+    s
+    glutFullScreen();
+    glutSetWindow(awin);
+    glutPopWindow();       
+    glutShowWindow();
+    glutPostRedisplay();
 
     render_init(width, height);
 
