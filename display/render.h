@@ -5,11 +5,8 @@
 #include <stdint.h>
 #include "buffer.h"
 
-void render_init(int width, int height);
-void render_frame(void);
-void render_resize(int width, int height);
-
-
-
+void render_init(int w, int h);
+void render_frame(int w, int h);
+void render_resize(int w, int h);
 
 #endif 

@@ -9,7 +9,7 @@ pixel_t color_greyscale(int iterations, int max_iterations) {
 }
 
 pixel_t color_grad(int iterations, int max_iterations) {
-    double t = (double)(iterations / max_iterations);
+    double t = (double)(iterations / (double)max_iterations);
 
     uint8_t r = (uint8_t)(9 * (1 - t) * t * t * t * 255);
     uint8_t g = (uint8_t)(15 * (1 - t) * (1 - t) * t * t * 255);

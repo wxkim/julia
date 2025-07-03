@@ -20,17 +20,10 @@ void render_resize(int width, int height) {
     glMatrixMode(GL_MODELVIEW);
 }
 
-void render_frame(void) {
+void render_frame(int w, int h) {
     glClear(GL_COLOR_BUFFER_BIT);
 
-    glColor3f(1.0f, 0.0f, 0.0f);
-    glBegin(GL_QUADS);
-        glVertex2f(win_width/2 - 50, win_height/2 - 50);
-        glVertex2f(win_width/2 + 50, win_height/2 - 50);
-        glVertex2f(win_width/2 + 50, win_height/2 + 50);
-        glVertex2f(win_width/2 - 50, win_height/2 + 50);
-    glEnd();
-
+    glDrawPixels(w, h, GL_RGB, GL_UNSIGNED_BYTE, buffer_pixels());
     glutSwapBuffers();
 }
 

@@ -11,4 +11,6 @@ void buffer_free(void);
 
 void buffer_set(int x, int y, pixel_t p);
 
+void buffer_dump_ppm(const char *filename, int width, int height);
+
 #endif

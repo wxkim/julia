@@ -11,8 +11,8 @@ complex_t map_pixel_to_complex(int x, int y, int width, int height) {
 
 static int compute_escape(int width, int height, complex_t cs) {
 	complex_t c0 = {
-		.re = -0.8F,
-		.im = 0.156F
+		.re = -0.7F,
+		.im = 0.7015F 
 	};
 
 	return julia_iterations(cs, c0, MAX_ITER);
@@ -22,12 +22,16 @@ static int compute_escape(int width, int height, complex_t cs) {
 void julia_compute(int width, int height) {
 	for (int y = 0; y < height; ++y) {
 		for (int x = 0; x < width; ++x) {
-			complex_t z0 = map_pixel_to_complex(x, y, height, width);
+			complex_t z0 = map_pixel_to_complex(x, y, width, height);
 			int iter = compute_escape(width, height, z0);
-			pixel_t color = color_rgb(iter, MAX_ITER);
+			pixel_t color = color_grad(iter, MAX_ITER);
 			buffer_set(x, y, color);
 		}
 	}
+
+	// for (int y = 0; y < height; ++y)
+    // for (int x = 0; x < width; ++x)
+    //     buffer_set(x, y, (pixel_t){255, 0, 0});
 }
 
 unsigned int julia_iterations(complex_t z0, complex_t c, int max_iterations) {

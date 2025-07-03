@@ -33,7 +33,7 @@ SRC = $(wildcard src/*.c) $(wildcard display/*.c)
 # IGNOREFLAGS ON
 
 all:
-	$(CC) $(CFLAGS) $(IGNOREFLAGS) $(IFLAGS) $(SRC) -o $(OUT) $(LDFLAGS)
+	clear && $(CC) $(CFLAGS) $(IGNOREFLAGS) $(IFLAGS) $(SRC) -o $(OUT) $(LDFLAGS)
 
 run:
 
