@@ -33,7 +33,7 @@ SRC = $(wildcard src/*.c) $(wildcard display/*.c)
 # IGNOREFLAGS ON
 
 all:
-	$(CC) $(CFLAGS) $(IGNOREFLAGS) $(IFLAGS) $(SRC) -o $(OUT) $(LDFLAGS) 
+	$(CC) $(CFLAGS) $(IGNOREFLAGS) $(IFLAGS) $(SRC) -o $(OUT) $(LDFLAGS)
 
 run:
 
@@ -42,3 +42,10 @@ run:
 clean:
 
 	rm -f $(OUT)
+
+
+.PHONY: debug
+
+debug:
+	$(CC) -g $(CFLAGS) $(IGNOREFLAGS) $(IFLAGS) $(SRC) -o $(OUT) $(LDFLAGS) && gdb ./$(OUT)
+    
