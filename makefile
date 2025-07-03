@@ -1,6 +1,6 @@
 TARGET = julia
 CC = gcc
-CFLAGS = -Wall -Wextra 
+CFLAGS = -std=c11 -Wall -Wextra
 IGNOREFLAGS = -Wno-unused-parameter -Wno-unused-variable
 INFLAGS = -Iinclude -Idisplay -Icore -Isrc
 

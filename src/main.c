@@ -21,7 +21,7 @@ int main(int argc, char **argv) {
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE);
     glutInitWindowSize(width, height);
     int awin = glutCreateWindow("Julia Fractal");
-    s
+
     glutFullScreen();
     glutSetWindow(awin);
     glutPopWindow();       
@@ -29,9 +29,13 @@ int main(int argc, char **argv) {
     glutPostRedisplay();
 
     render_init(width, height);
-
+    buffer_init(width, height);
     glutDisplayFunc(display_wrapper);
     glutReshapeFunc(reshape_wrapper);
+
+    for (int y = 0; y < height; y++)
+        for (int x = 0; x < width; x++)
+            buffer_set(x, y, 0, 0, 0);
 
     glutMainLoop();
     return 0;
