@@ -10,7 +10,8 @@
 #define SCALEV (1.5F)
 
 void julia_compute(int width, int height);
-unsigned int julia_iterations(complex_t z0, complex_t c, int max_iterations);
+void mandelbrot_compute(int width, int height);
+unsigned int compute_iterations(complex_t z0, complex_t c, int max_iterations);
 complex_t map_pixel_to_complex(int x, int y, int width, int height);
 
 #endif

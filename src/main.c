@@ -1,116 +1,73 @@
 //
-// AUTHOR WILLIAM KIM
-// DATE JUNE 6 2025
+// AUTHOR: William Kim
+// DATE:   June 6, 2025
 //
 
 #include "main.h"
-#include "complex.h"
-#include "julia.h"
-#include "../core/core.h"
-#include "../display/render.h"
-#include "../display/buffer.h"
 
-
-const int width = 1280;
-const int height = 720;
-
+static int window_width = WINDOW_WIDTH;
+static int window_height = WINDOW_HEIGHT;
 extern pixel_t *buffer;
 
-void display_wrapper() {
-    render_frame(width, height);
-}
-
-void reshape_wrapper(int w, int h) {
-    buffer_init(w, h);         
-    julia_compute(w, h);      
-    render_resize(w, h);       
-}
-
-// int main(int argc, char **argv) {
-//     buffer_init(width, height);
-//     buffer_dump_ppm("julia.ppm", width, height);
-//     buffer_free();
-//     return 0;
-// }
-
-#include <stdlib.h>
-#include <stdio.h>
-#include <stdint.h>
+void display_wrapper(void);
+void reshape_wrapper(int w, int h);
+void force_fullscreen(int window_id);
 
 int main(int argc, char** argv) {
-    // size_t size = 100 * sizeof(pixel_t);
-    // pixel_t *buffer = (pixel_t *)calloc(100, sizeof(pixel_t));
-
-    // if (buffer == NULL) {
-    //     printf("Failed to allocate %zu bytes\n", size);
-    //     return 1;
-    // }
-
-    // printf("Allocation success: first byte = %u\n", ((uint8_t *)buffer)[0]);
-
-    // free(buffer);
-    // return 0;
-
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE);
-    glutInitWindowSize(width, height);
+    glutInitWindowSize(window_width, window_height);
 
-    int awin = glutCreateWindow("Julia Fractal");
-    //force_fullscreen(awin);
+    int win = glutCreateWindow(USE_MANDELBROT ? "Mandelbrot Fractal" : "Julia Fractal");
 
-    buffer_init(width, height);
-    julia_compute(width, height);
-    render_init(width, height);
+    #if ENABLE_FULLSCREEN //turn this into CLI Arg
+        force_fullscreen(win);
+        window_width = 1920;
+        window_height = 1080;
+    #endif
 
-    
-    //buffer_dump_ppm("julia.ppm", width, height);
+    buffer_init(window_width, window_height);
+
+    #if USE_MANDELBROT //turn this into CLI Arg
+        mandelbrot_compute(window_width, window_height);
+    #else
+        julia_compute(window_width, window_height);
+    #endif
+
+    render_init(window_width, window_height);
 
     glutDisplayFunc(display_wrapper);
     glutReshapeFunc(reshape_wrapper);
 
-    uint8_t* raw = (uint8_t*)buffer_pixels();
-    printf("First pixel RGB: %d %d %d\n", raw[0], raw[1], raw[2]);
-
     glutPostRedisplay();
-
     glutMainLoop();
+
     return 0;
 }
 
+void display_wrapper(void) {
+    render_frame(window_width, window_height);
+}
 
-void force_fullscreen(int awin) {
+void reshape_wrapper(int w, int h) {
+    window_width = w;
+    window_height = h;
+
+    buffer_init(w, h);
+
+#if USE_MANDELBROT
+    mandelbrot_compute(w, h);
+#else
+    julia_compute(w, h);
+#endif
+
+    render_resize(w, h);
+}
+
+void force_fullscreen(int window_id) {
     glutFullScreen();
-    glutSetWindow(awin);
-    glutPopWindow();       
+    glutSetWindow(window_id);
+    glutPopWindow();
     glutShowWindow();
     glutPostRedisplay();
 }
-
-
-/*
-glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE);
-    glutInitWindowSize(width, height);
-
-    int awin = glutCreateWindow("Julia Fractal");
-    //force_fullscreen(awin);
-
-    buffer_init(width, height);
-    //julia_compute(width, height);
-    render_init(width, height);
-
-    
-    buffer_dump_ppm("julia.ppm", width, height);
-
-
-
-    glutDisplayFunc(display_wrapper);
-    glutReshapeFunc(reshape_wrapper);
-
-    uint8_t* raw = (uint8_t*)buffer_pixels();
-    printf("First pixel RGB: %d %d %d\n", raw[0], raw[1], raw[2]);
-
-    glutPostRedisplay();
-
-    glutMainLoop();
-    return 0;*/

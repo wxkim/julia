@@ -21,10 +21,10 @@ static int height = 720;
 void buffer_init(int w, int h) {
     size_t size = sizeof(pixel_t) * w * h;
 
-    //(size_t)(w*h)
-
 	buffer = calloc((size_t)(w*h), sizeof(pixel_t));
     assert(buffer != NULL && "Failed to allocate display buffer");
+    width = w;
+    height = h;
 }
 
 pixel_t *buffer_pixels(void) {
@@ -42,18 +42,22 @@ void buffer_set(int x, int y, pixel_t p) {
     buffer[flipped_y * width + x] = p;
 }
 
-void buffer_dump_ppm(const char *filename, int width, int height) {
-    FILE *fp = fopen(filename, "wb");
-    if (!fp) {
-        perror("PPM file open failed");
-        return;
+#ifdef DEBUG
+
+    void buffer_dump_ppm(const char *filename, int width, int height) {
+        FILE *fp = fopen(filename, "wb");
+        if (!fp) {
+            perror("PPM file open failed");
+            return;
+        }
+
+        fprintf(fp, "P6\n%d %d\n255\n", width, height);
+
+        for (int y = height - 1; y >= 0; y--) {
+            fwrite(&buffer_pixels()[y * width], sizeof(pixel_t), width, fp);
+        }
+
+        fclose(fp);
     }
 
-    fprintf(fp, "P6\n%d %d\n255\n", width, height);
-
-    for (int y = height - 1; y >= 0; y--) {
-        fwrite(&buffer_pixels()[y * width], sizeof(pixel_t), width, fp);
-    }
-
-    fclose(fp);
-}
+#endif

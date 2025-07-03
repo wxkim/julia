@@ -10,6 +10,8 @@ typedef struct __attribute__((packed)) {
 extern const pixel_t COLOR_BLACK;
 extern const pixel_t COLOR_WHITE;
 
+void color_invert(pixel_t *p);
+
 pixel_t color_greyscale(int iterations, int max_iterations);
 pixel_t color_grad(int iterations, int max_iterations);
 pixel_t color_rgb(int iterations, int max_iterations);
