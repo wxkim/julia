@@ -30,6 +30,14 @@ make run
 make clean
 ```
 
+### All in one command on default settings:
+
+```bash
+clear; make clean; make; make run
+```
+
+## Arguments
+
 ## Directory Structure
 
 ```.

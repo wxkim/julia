@@ -1,7 +1,7 @@
 TARGET = julia
 CC = gcc
 CFLAGS = -std=c11 -Wall -Wextra
-IGNOREFLAGS = -Wno-unused-parameter -Wno-unused-variable
+IGNOREFLAGS = -Wno-unused-parameter -Wno-unused-variable -Wno-return-type
 INFLAGS = -Iinclude -Idisplay -Icore -Isrc
 
 UNAME_S := $(shell uname -s)
@@ -33,7 +33,7 @@ SRC = $(wildcard src/*.c) $(wildcard display/*.c)
 # IGNOREFLAGS ON
 
 all:
-	$(CC) $(CFLAGS)  $(IFLAGS) $(SRC) -o $(OUT) $(LDFLAGS) 
+	$(CC) $(CFLAGS) $(IGNOREFLAGS) $(IFLAGS) $(SRC) -o $(OUT) $(LDFLAGS) 
 
 run:
 

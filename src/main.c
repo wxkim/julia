@@ -4,6 +4,10 @@
 //
 
 #include "main.h"
+#include "complex.h"
+#include "../core/core.h"
+#include "../display/render.h"
+#include "../display/buffer.h"
 
 int width = 1280;
 int height = 720;
@@ -35,7 +39,7 @@ int main(int argc, char **argv) {
 
     for (int y = 0; y < height; y++)
         for (int x = 0; x < width; x++)
-            buffer_set(x, y, 0, 0, 0);
+            //buffer_set(x, y, 0, 0, 0);
 
     glutMainLoop();
     return 0;
