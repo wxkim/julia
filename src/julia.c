@@ -33,8 +33,8 @@ static int compute_escape(int width, int height, complex_t cs, complex_t c0) {
 void julia_compute(frame_dimensions_t* f, pixel_t* framebuffer, uint32_t max_iter) {
 
 	complex_t c0 = {
-		.re = -0.5125F,
-		.im = 0.5213F 
+		.re = 0.355F,
+		.im = 0.355F 
 	};
 
 	for(uint32_t y = f->ybound_begin; y < f->ybound_end; ++y) {
@@ -43,7 +43,7 @@ void julia_compute(frame_dimensions_t* f, pixel_t* framebuffer, uint32_t max_ite
 			complex_t z0 = julia_map_pixel_to_complex(x, y, f->img_width, f->img_height);
 			int iter = compute_escape(f->img_width, f->img_height, z0, c0);
 
-			pixel_t color = color_grad(iter, max_iter);
+			pixel_t color = color_greyscale(iter, max_iter);
 
 			buffer_set(x, y, color);
 

@@ -25,7 +25,7 @@ int main(int argc, char** argv) {
 
     int win = glutCreateWindow("Fractal");
 
-    init_rendering(window_width, window_height, julia_compute);
+    init_rendering(window_width, window_height, mandelbrot_compute);
 
     render_init(window_width, window_height);
     glutDisplayFunc(display_wrapper);
