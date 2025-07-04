@@ -17,17 +17,13 @@ static int window_height = WINDOW_HEIGHT;
 
 extern pixel_t *buffer;
 
-void display_wrapper(void);
-void reshape_wrapper(int w, int h);
-void force_fullscreen(int window_id);
-void init_rendering(int w, int h, fractal_compute_fn_t fn);
 
 int main(int argc, char** argv) {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE);
     glutInitWindowSize(window_width, window_height);
 
-    int win = glutCreateWindow(USE_MANDELBROT ? "Mandelbrot Fractal" : "Julia Fractal");
+    int win = glutCreateWindow("Fractal");
 
     init_rendering(window_width, window_height, julia_compute);
 

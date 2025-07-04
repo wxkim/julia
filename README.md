@@ -1,5 +1,7 @@
 # Julia
 
+[![Linux](https://github.com/wxkim/julia/actions/workflows/linux.yml/badge.svg)](https://github.com/wxkim/julia/actions/workflows/linux.yml)
+
 ## Fractal Renderer (Minimal C/OpenGL)
 
 This project renders Julia fractals in C using multithreading.
@@ -42,9 +44,9 @@ clear; make clean; make; make run
 
 ```.
 ├── README.md
-├── makefile
-├── DSP
 ├── core
+│   ├── args.c
+│   ├── args.h
 │   ├── core.h
 │   ├── error.h
 │   ├── thread.c
@@ -62,13 +64,14 @@ clear; make clean; make; make run
 │   ├── main.h
 │   └── pmath.h
 ├── julia.exe
+├── makefile
 └── src
     ├── complex.c
     ├── julia.c
     ├── main.c
     └── pmath.c
 
-6 directories, 21 files
+5 directories, 23 files
 
 
 ```

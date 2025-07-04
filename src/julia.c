@@ -43,7 +43,7 @@ void julia_compute(frame_dimensions_t* f, pixel_t* framebuffer, uint32_t max_ite
 			complex_t z0 = julia_map_pixel_to_complex(x, y, f->img_width, f->img_height);
 			int iter = compute_escape(f->img_width, f->img_height, z0, c0);
 
-			pixel_t color = color_rgb(iter, max_iter);
+			pixel_t color = color_grad(iter, max_iter);
 
 			buffer_set(x, y, color);
 

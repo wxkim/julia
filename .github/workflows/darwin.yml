@@ -1,0 +1,45 @@
+name: Build and Release (macOS)
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build-macos:
+    name: Build on macOS
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install dependencies (freeglut)
+        run: |
+          brew update
+          brew install freeglut
+
+      - name: Build project
+        run: make
+
+      - name: Prepare release package
+        run: |
+          mkdir -p dist
+          cp ./julia dist/
+          chmod +x dist/julia
+          tar -czf julia-macos.tar.gz -C dist julia
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: julia-macos
+          path: julia-macos.tar.gz
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Release ${{ github.ref_name }}
+          tag_name: ${{ github.ref_name }}
+          files: julia-macos.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

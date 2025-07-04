@@ -11,7 +11,7 @@
 #include "../display/buffer.h"
 #include "../inc/julia.h"
 
-#define MAX_THREADS 64
+#define MAX_THREADS 12
 
 void launch_rendering_threads(int num_threads, thread_arg_t* thread_args);
 frame_dimensions_t* frame_delegation(int num_threads, int width, int height);

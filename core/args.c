@@ -2,34 +2,36 @@
 
 
 
-config_t config = {
+args_t config = {
     .fractal_type = FRACTAL_JULIA,
     .coloring = COLOR_GRADIENT,
     .applied_filter = FILTER_NONE,
     .output_file_type = OUTPUT_PNG,
     .windowd = WINDOW_WINDOWED,
-    .multithread = 64,
+    .multithread = 12,
     .starting_z = NULL,
     .starting_c = NULL,
     .file_path_save = NULL,
     .help_wanted = 0
 };
 
+// settings_t
+
 void print_help() {
-    const char* help_message =
+    const char* help =
         "Usage: ./julia [flags]\n"
         "  --fractal <julia | mandelbrot>\n"
         "  --color <inverted | greyscale | gradient | flat | bw>\n"
         "  --filter <none | bayer | noise | floyd>\n"
         "  --output <png | ppm | jpg>\n"
         "  --fullscreen <fullscreen | windowed>\n"
-        "  --multithread=<int>    [default: 64]\n"
+        "  --multithread=<int>    [default: 12]\n"
         "  --starting-z=<float>+<float>i\n"
         "  --starting-c=<float>+<float>i\n"
         "  --save <path/filename>\n";
     
     
-        printf("%s", help_message);
+        printf("%s", help);
 }
 
 void parse_args(int argc, char** argv) {
@@ -123,7 +125,7 @@ void parse_args(int argc, char** argv) {
     }
 
     if (argc == 1 || config.help_wanted) {
-        printf("%s", help_message);
+        print_help();
         exit(0);
     }
 }

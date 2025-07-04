@@ -20,11 +20,11 @@ endif
 
 ifeq ($(OS_TYPE),MINGW)
     IFLAGS = -I"C:/msys64/include" -I"C:/msys64/include/GL" -I./include -Iinc
-    LDFLAGS = -lopengl32 -lglu32 -lfreeglut
+    LDFLAGS = -lopengl32 -lglu32 -lfreeglut -lm
     OUT = julia.exe
 else
     IFLAGS = -I./include -Iinc
-    LDFLAGS = -lGL -lGLU -lglut
+    LDFLAGS = -lGL -lGLU -lglut -lm
     OUT = julia
 endif
 
@@ -33,7 +33,7 @@ SRC = $(wildcard src/*.c) $(wildcard display/*.c) $(wildcard core/*.c)
 # IGNOREFLAGS ON
 
 all:
-	clear && $(CC) $(CFLAGS) $(IGNOREFLAGS) $(IFLAGS) $(SRC) -o $(OUT) $(LDFLAGS)
+	$(CC) $(CFLAGS) $(IGNOREFLAGS) $(IFLAGS) $(SRC) -o $(OUT) $(LDFLAGS)
 
 run:
 

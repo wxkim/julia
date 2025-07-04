@@ -1,0 +1,56 @@
+name: Build and Release (Windows)
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build-windows:
+    name: Build on Windows
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up MSYS2
+        uses: msys2/setup-msys2@v2
+        with:
+          update: true
+          install: >-
+            gcc
+            make
+            mingw-w64-x86_64-freeglut
+          msystem: MINGW64
+
+      - name: Build project
+        shell: msys2 {0}
+        run: make
+
+      - name: Copy required DLLs
+        shell: msys2 {0}
+        run: |
+          mkdir -p dist
+          cp julia.exe dist/
+          cp /mingw64/bin/libfreeglut.dll dist/
+          cp /mingw64/bin/libwinpthread-1.dll dist/
+
+      - name: Create zip archive
+        run: |
+          Compress-Archive -Path dist\* -DestinationPath julia-windows.zip
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: julia-windows
+          path: julia-windows.zip
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Release ${{ github.ref_name }}
+          tag_name: ${{ github.ref_name }}
+          files: julia-windows.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
