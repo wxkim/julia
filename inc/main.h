@@ -1,6 +1,8 @@
 #include "GL/glut.h"
 #include "julia.h"
+
 #include "../core/core.h"
+#include "../core/thread.h"
 #include "../display/render.h"
 #include "../display/buffer.h"
 

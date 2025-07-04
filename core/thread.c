@@ -1,29 +1,31 @@
 #include "thread.h"
 
-extern pixel_t *buffer;
+
+// #include "../core/core.h"
+// #include "../display/color.h"
+// #include "../display/buffer.h"
+// #include "../core/thread.h"
+#include "../inc/julia.h"
 
 static void* multithreaded_rendering(void* args) {
     thread_arg_t* t = (thread_arg_t*)(args);
+
     frame_dimensions_t* f = &t->frame_dimensions;
 
-    for (uint32_t y = f->ybound_begin; y < f->ybound_end; ++y) {
-        for (uint32_t x = f->xbound_begin; x < f->xbound_end; ++x) {
-            // TODO MULTITHREADED RENDERING LOGIC
+    t->fractal_type_fn(f, t->framebuffer, t->max_iter);
 
-        }
-
-    }
+    return NULL;
 }
 
-
-
 void launch_rendering_threads(int num_threads, thread_arg_t* thread_args) {
-    pthread_t threads[max_thread_count];
+    pthread_t threads[MAX_THREADS];
+
+    if(num_threads > MAX_THREADS) 
+        error_warning("High thread count. This may impact performance. Execution will continue...");
 
     for (int i = 0; i < num_threads; ++i) {
         if(pthread_create(&threads[i], NULL, multithreaded_rendering, &thread_args[i]) != 0) {
-            LOG("Failed to create thread. Halting execution...");
-            exit(EXIT_FAILURE);
+            error_fatal("Failed to create thread. Halting execution...\n");
         }
     }
 
@@ -34,8 +36,7 @@ frame_dimensions_t* frame_delegation(int num_threads, int width, int height) {
     frame_dimensions_t* regions = malloc(sizeof(frame_dimensions_t) * num_threads);
 
     if(!regions) {
-        LOG("Failed to allocate memory. Halting execution...");
-        exit(EXIT_FAILURE);
+        error_fatal("Failed to allocate memory. Halting execution...\n");
     }
 
     uint32_t rows_per_thread = height / num_threads;
@@ -44,16 +45,16 @@ frame_dimensions_t* frame_delegation(int num_threads, int width, int height) {
     uint32_t current_y = 0;
 
     for (int i = 0; i < num_threads; ++i) {
-        uint32_t current_height = rows_per_thread + (i < remainder ? 1 : 0);
+        uint32_t current_height = rows_per_thread + ((uint32_t) i < (uint32_t) remainder ? 1 : 0);
 
         regions[i] = (frame_dimensions_t) {
-            xbound_begin = 0,
-            ybound_begin = current_y,
-            xbound_end = width,
-            ybound_end = current_y + this_height,
-            img_width = width,
-            img_height = height
-        }
+            .xbound_begin = 0,
+            .ybound_begin = current_y,
+            .xbound_end = width,
+            .ybound_end = current_y + current_height,
+            .img_width = width,
+            .img_height = height
+        };
 
         current_y += current_height;
     }

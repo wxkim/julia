@@ -24,11 +24,10 @@ pixel_t color_greyscale(int iterations, int max_iterations) {
 
 pixel_t color_grad(int iterations, int max_iterations) {
     if (iterations == max_iterations)
-        return COLOR_BLACK; // black inside set
+        return COLOR_BLACK; 
 
     float t = (float)iterations / max_iterations;
 
-    // gamma corrected brightness
     float brightness = powf(t, 0.3f);
 
     uint8_t r = (uint8_t)(9 * (1 - brightness) * brightness * brightness * brightness * 255);

@@ -2,7 +2,7 @@ TARGET = julia
 CC = gcc
 CFLAGS = -std=c11 -O3 -march=native -Wall -Wextra
 IGNOREFLAGS = -Wno-unused-parameter -Wno-unused-variable -Wno-return-type
-INFLAGS = -Iinclude -Idisplay -Icore -Isrc
+INFLAGS = -Iinc -Idisplay -Icore -Isrc
 
 UNAME_S := $(shell uname -s)
 
@@ -28,7 +28,7 @@ else
     OUT = julia
 endif
 
-SRC = $(wildcard src/*.c) $(wildcard display/*.c)
+SRC = $(wildcard src/*.c) $(wildcard display/*.c) $(wildcard core/*.c)
 
 # IGNOREFLAGS ON
 

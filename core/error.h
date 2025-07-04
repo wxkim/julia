@@ -44,13 +44,12 @@ __attribute__((noreturn)) static inline void error_fpe(const char* msg) {
     __builtin_unreachable();
 }
 
-__attribute__((noreturn)) static inline void error_warning(const char* msg) {
+static inline void error_warning(const char* msg) {
     if (msg) {
         write(STDERR_FILENO, "Warning: ", 9);
         write(STDERR_FILENO, msg, strlen(msg));
         write(STDERR_FILENO, "\n", 1);
     }
-
 }
 
 

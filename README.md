@@ -41,12 +41,14 @@ clear; make clean; make; make run
 ## Directory Structure
 
 ```.
-.
 ├── README.md
 ├── makefile
+├── DSP
 ├── core
 │   ├── core.h
-│   └── error.h
+│   ├── error.h
+│   ├── thread.c
+│   └── thread.h
 ├── display
 │   ├── buffer.c
 │   ├── buffer.h
@@ -58,13 +60,15 @@ clear; make clean; make; make run
 │   ├── complex.h
 │   ├── julia.h
 │   ├── main.h
-│   └── math.h
+│   └── pmath.h
+├── julia.exe
 └── src
     ├── complex.c
     ├── julia.c
     ├── main.c
-    └── math.c
+    └── pmath.c
 
-5 directories, 19 files
+6 directories, 21 files
+
 
 ```
