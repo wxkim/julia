@@ -29,14 +29,6 @@ int main(int argc, char** argv) {
 
     int win = glutCreateWindow(USE_MANDELBROT ? "Mandelbrot Fractal" : "Julia Fractal");
 
-#if ENABLE_FULLSCREEN
-    force_fullscreen(win);
-    window_width = 1920;
-    window_height = 1080;
-#endif
-
-    // edit this later
-
     init_rendering(window_width, window_height, julia_compute);
 
     render_init(window_width, window_height);

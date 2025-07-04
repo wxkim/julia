@@ -5,6 +5,7 @@
 #include "../core/thread.h"
 #include "../display/render.h"
 #include "../display/buffer.h"
+#include "../core/args.h"
 
 #include <stdlib.h>
 #include <stdio.h>
