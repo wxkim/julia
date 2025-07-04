@@ -21,11 +21,11 @@ void launch_rendering_threads(int num_threads, thread_arg_t* thread_args) {
     pthread_t threads[MAX_THREADS];
 
     if(num_threads > MAX_THREADS) 
-        error_warning("High thread count. This may impact performance. Execution will continue...");
+        error_warning("High thread count! \n");
 
     for (int i = 0; i < num_threads; ++i) {
         if(pthread_create(&threads[i], NULL, multithreaded_rendering, &thread_args[i]) != 0) {
-            error_fatal("Failed to create thread. Halting execution...\n");
+            error_fatal("Failed to create thread. SIGKILL triggered. \n");
         }
     }
 
@@ -36,7 +36,7 @@ frame_dimensions_t* frame_delegation(int num_threads, int width, int height) {
     frame_dimensions_t* regions = malloc(sizeof(frame_dimensions_t) * num_threads);
 
     if(!regions) {
-        error_fatal("Failed to allocate memory. Halting execution...\n");
+        error_fatal("Failed to allocate memory. SIGKILL triggered. \n");
     }
 
     uint32_t rows_per_thread = height / num_threads;

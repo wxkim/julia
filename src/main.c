@@ -76,14 +76,14 @@ void init_rendering(int w, int h, fractal_compute_fn_t fn) {
 }
 
 void reshape_wrapper(int w, int h) {
-   window_width = w;
-   window_height = h;
+    window_width = w;
+    window_height = h;
 
-   buffer_init(w,h);
+    buffer_init(w,h);
 
-   pixel_t* framebuffer = buffer_pixels();
+    pixel_t* framebuffer = buffer_pixels();
 
-   int num_threads = 8;
+    int num_threads = 8;
     frame_dimensions_t* regions = frame_delegation(num_threads, w, h);
 
     thread_arg_t thread_args[num_threads];

@@ -2,7 +2,7 @@
 
 ## Fractal Renderer (Minimal C/OpenGL)
 
-This project renders Julia fractals in C.
+This project renders Julia fractals in C using multithreading.
 
 Developed on x86_64.
 
@@ -15,7 +15,7 @@ Make sure you have OpenGL and GLUT development libraries installed. Install `mak
 ### To build:
 
 ```bash
-make
+make -jN
 ```
 
 ### To run:
