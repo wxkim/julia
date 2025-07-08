@@ -49,21 +49,11 @@ typedef struct {
     uint8_t multithread;
     char** starting_z;
     char** starting_c;
-    char** file_path_save;
-    int help_wanted;
-} args_t;
-
-typedef struct {
-    fractal_t fractal_type;
-    color_scheme_t coloring;
-    filtering_option_t applied_filter;
-    output_format_t output_file_type;
-    window_t windowd;
-    uint8_t multithread;
     complex_t starting_z;
     complex_t starting_c;
     char** file_path_save;
-} settings_t;
+    int help_wanted;
+} args_t;
 
 void parse_args(int argc, char** argv);
 

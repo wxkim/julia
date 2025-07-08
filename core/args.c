@@ -15,7 +15,6 @@ args_t config = {
     .help_wanted = 0
 };
 
-// settings_t
 
 void print_help() {
     const char* help =
