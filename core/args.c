@@ -11,6 +11,8 @@ args_t config = {
     .multithread = 12,
     .starting_z = NULL,
     .starting_c = NULL,
+    .starting_z_complex = {0},
+    .starting_c_complex = {0.355, 0.355},
     .file_path_save = NULL,
     .help_wanted = 0
 };
@@ -21,13 +23,13 @@ void print_help() {
         "Usage: ./julia [flags]\n"
         "  --fractal <julia | mandelbrot>\n"
         "  --color <inverted | greyscale | gradient | flat | bw>\n"
-        "  --filter <none | bayer | noise | floyd>\n"
-        "  --output <png | ppm | jpg>\n"
+        "  --filter <none | bayer | noise | floyd> ... (Coming Soon)\n"
+        "  --output <png | ppm | jpg> ... (Coming Soon)\n"
         "  --fullscreen <fullscreen | windowed>\n"
         "  --multithread=<int>    [default: 12]\n"
-        "  --starting-z=<float>+<float>i\n"
-        "  --starting-c=<float>+<float>i\n"
-        "  --save <path/filename>\n";
+        "  --starting-z=<float>(+)/(-)<float>i\n"
+        "  --starting-c=<float>(+)/(-)<float>i\n"
+        "  --save <path/filename> ... (Coming Soon)\n";
     
     
         printf("%s", help);
@@ -108,10 +110,12 @@ void parse_args(int argc, char** argv) {
 
         else if (strcmp(name, "starting-z") == 0) {
             config.starting_z = &optarg;
+            config.starting_z_complex = complex_from_str(optarg);
         }
 
         else if (strcmp(name, "starting-c") == 0) {
             config.starting_c = &optarg;
+            config.starting_c_complex = complex_from_str(optarg);
         }
 
         else if (strcmp(name, "save") == 0) {
@@ -123,8 +127,70 @@ void parse_args(int argc, char** argv) {
         }
     }
 
-    if (argc == 1 || config.help_wanted) {
+    if (config.help_wanted) {
         print_help();
         exit(0);
     }
+}
+
+complex_t complex_from_str(const char* str) {
+    complex_t c = {0};
+
+    char* i_ptr = strchr(str, 'i');
+    if (!i_ptr) {
+        fprintf(stderr, "Invalid complex format (missing 'i'): %s\n", str);
+        return c;
+    }
+
+    char* plus_minus = NULL;
+    for (char* p = (char*)str + 1; *p && p < i_ptr; p++) {
+        if (*p == '+' || *p == '-') {
+            plus_minus = p;
+        }
+    }
+
+    if (!plus_minus) {
+        fprintf(stderr, "Invalid complex format (missing + or - between real/imag): %s\n", str);
+        return c;
+    }
+
+    char real_buf[32] = {0};
+    char imag_buf[32] = {0};
+
+    strncpy(real_buf, str, plus_minus - str);
+    strncpy(imag_buf, plus_minus, i_ptr - plus_minus);
+
+    c.re = atof(real_buf);
+    c.im = atof(imag_buf);
+
+    return c;
+}
+
+#include <stdio.h>
+
+void print_config_summary() {
+    printf("\n[CONFIG SUMMARY]\n");
+    printf("  Fractal:         %s\n", config.fractal_type == FRACTAL_JULIA ? "Julia" : "Mandelbrot");
+    
+    const char* color_names[] = {
+        "Inverted", "Greyscale", "Gradient", "Flat RGB", "Black & White"
+    };
+    printf("  Color Scheme:    %s\n", color_names[config.coloring]);
+
+    const char* filter_names[] = {
+        "None", "Bayer", "Noise", "Floyd–Steinberg"
+    };
+    printf("  Dithering:       %s\n", filter_names[config.applied_filter]);
+
+    const char* output_names[] = {
+        "PPM", "PNG", "JPG"
+    };
+    printf("  Output Format:   %s\n", output_names[config.output_file_type]);
+
+    printf("  Window Mode:     %s\n", config.windowd == WINDOW_FULLSCREEN ? "Fullscreen" : "Windowed");
+    printf("  Threads:         %d\n", config.multithread);
+    printf("  Starting Z:      %.4f + %.4fi\n", config.starting_z_complex.re, config.starting_z_complex.im);
+    printf("  Starting C:      %.4f + %.4fi\n", config.starting_c_complex.re, config.starting_c_complex.im);
+    printf("  Save Path:       %s\n", config.file_path_save ? *config.file_path_save : "(not set)");
+    printf("\n");
 }

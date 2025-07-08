@@ -49,12 +49,14 @@ typedef struct {
     uint8_t multithread;
     char** starting_z;
     char** starting_c;
-    complex_t starting_z;
-    complex_t starting_c;
+    complex_t starting_z_complex;
+    complex_t starting_c_complex;
     char** file_path_save;
     int help_wanted;
 } args_t;
 
 void parse_args(int argc, char** argv);
+complex_t complex_from_str(const char* str);
+void print_config_summary();
 
 #endif

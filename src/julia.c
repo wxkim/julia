@@ -2,7 +2,6 @@
 
 
 #include "../core/core.h"
-//#include "../core/thread.h"
 #include "../display/color.h"
 #include "../display/buffer.h"
 
@@ -46,10 +45,8 @@ void julia_compute(frame_dimensions_t* f, pixel_t* framebuffer, uint32_t max_ite
 			pixel_t color = color_greyscale(iter, max_iter);
 
 			buffer_set(x, y, color);
-
 		}
 	}
-	
 }
 
 void mandelbrot_compute(frame_dimensions_t* f, pixel_t* framebuffer, uint32_t max_iter) {
