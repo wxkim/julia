@@ -36,94 +36,100 @@ void print_help() {
 }
 
 void parse_args(int argc, char** argv) {
+
     static struct option long_options[] = {
-        {"fractal", required_argument, 0, 0},
-        {"color", required_argument, 0, 0},
-        {"filter", required_argument, 0, 0},
-        {"output", required_argument, 0, 0},
-        {"window", required_argument, 0, 0},
-        {"multithread", required_argument, 0, 0},
-        {"starting-z", required_argument, 0, 0},
-        {"starting-c", required_argument, 0, 0},
-        {"save", required_argument, 0, 0},
-        {"help", no_argument, 0, 0},
+        {"fractal",      required_argument, 0, 'f'},
+        {"color",        required_argument, 0, 'c'},
+        {"filter",       required_argument, 0, 'l'},
+        {"output",       required_argument, 0, 'o'},
+        {"window",       required_argument, 0, 'w'},
+        {"multithread",  required_argument, 0, 't'},
+        {"starting-z",   required_argument, 0, 'z'},
+        {"starting-c",   required_argument, 0, 'x'},
+        {"save",         required_argument, 0, 's'},
+        {"help",         no_argument,       0, 'h'},
         {0, 0, 0, 0}
     };
 
-    while (1) {
-        int option_index = 0;
-        int c = getopt_long(argc, argv, "", long_options, &option_index);
-        if (c == -1) break;
+    int c;
+    while ((c = getopt_long(argc, argv, "f:c:l:o:w:t:z:x:s:h", long_options, NULL)) != -1) {
+        switch (c) {
+            case 'f':
+                if (strcmp(optarg, "julia") == 0)
+                    config.fractal_type = FRACTAL_JULIA;
+                else if (strcmp(optarg, "mandelbrot") == 0)
+                    config.fractal_type = FRACTAL_MANDELBROT;
+                else
+                    fprintf(stderr, "[error] Unknown fractal type: %s\n", optarg);
+                break;
 
-        const char* name = long_options[option_index].name;
+            case 'c':
+                if (strcmp(optarg, "inverted") == 0)
+                    config.coloring = COLOR_INVERTED;
+                else if (strcmp(optarg, "greyscale") == 0)
+                    config.coloring = COLOR_GREYSCALE;
+                else if (strcmp(optarg, "gradient") == 0)
+                    config.coloring = COLOR_GRADIENT;
+                else if (strcmp(optarg, "flat") == 0)
+                    config.coloring = COLOR_FLAT_RGB;
+                else if (strcmp(optarg, "bw") == 0)
+                    config.coloring = COLOR_BLACK_WHITE;
+                break;
 
-        if (strcmp(name, "fractal") == 0) {
-            if (strcmp(optarg, "julia") == 0) 
-                config.fractal_type = FRACTAL_JULIA;
-            else if (strcmp(optarg, "mandelbrot") == 0) 
-                config.fractal_type = FRACTAL_MANDELBROT;
-        }
+            case 'l':
+                if (strcmp(optarg, "bayer") == 0)
+                    config.applied_filter = FILTER_D_BAYER;
+                else if (strcmp(optarg, "noise") == 0)
+                    config.applied_filter = FILTER_D_NOISE;
+                else if (strcmp(optarg, "floyd") == 0)
+                    config.applied_filter = FILTER_D_FLOYD;
+                else
+                    config.applied_filter = FILTER_NONE;
+                break;
 
-        else if (strcmp(name, "color") == 0) {
-            if (strcmp(optarg, "inverted") == 0) 
-                config.coloring = COLOR_INVERTED;
-            else if (strcmp(optarg, "greyscale") == 0) 
-                config.coloring = COLOR_GREYSCALE;
-            else if (strcmp(optarg, "gradient") == 0) 
-                config.coloring = COLOR_GRADIENT;
-            else if (strcmp(optarg, "flat") == 0) 
-                config.coloring = COLOR_FLAT_RGB;
-            else if (strcmp(optarg, "bw") == 0) 
-                config.coloring = COLOR_BLACK_WHITE;
-        }
+            case 'o':
+                if (strcmp(optarg, "png") == 0)
+                    config.output_file_type = OUTPUT_PNG;
+                else if (strcmp(optarg, "ppm") == 0)
+                    config.output_file_type = OUTPUT_PPM;
+                else if (strcmp(optarg, "jpg") == 0)
+                    config.output_file_type = OUTPUT_JPG;
+                break;
 
-        else if (strcmp(name, "filter") == 0) {
-            if (strcmp(optarg, "bayer") == 0) 
-                config.applied_filter = FILTER_D_BAYER;
-            else if (strcmp(optarg, "noise") == 0) 
-                config.applied_filter = FILTER_D_NOISE;
-            else if (strcmp(optarg, "floyd") == 0) 
-                config.applied_filter = FILTER_D_FLOYD;
-            else 
-                config.applied_filter = FILTER_NONE;
-        }
+            case 'w':
+                if (strcmp(optarg, "fullscreen") == 0)
+                    config.windowd = WINDOW_FULLSCREEN;
+                else
+                    config.windowd = WINDOW_WINDOWED;
+                break;
 
-        else if (strcmp(name, "output") == 0) {
-            if (strcmp(optarg, "png") == 0) 
-                config.output_file_type = OUTPUT_PNG;
-            else if (strcmp(optarg, "ppm") == 0) 
-                config.output_file_type = OUTPUT_PPM;
-            else if (strcmp(optarg, "jpg") == 0) 
-                config.output_file_type = OUTPUT_JPG;
-        }
+            case 't':
+                config.multithread = (uint8_t)atoi(optarg);
+                break;
 
-        else if (strcmp(name, "window") == 0) {
-            if (strcmp(optarg, "fullscreen") == 0) 
-                config.windowd = WINDOW_FULLSCREEN;
-            else 
-                config.windowd = WINDOW_WINDOWED;
-        }
+            case 'z':
+                config.starting_z = &optarg;
+                config.starting_z_complex = complex_from_str(optarg);
+                break;
 
-        else if (strcmp(name, "multithread") == 0) {
-            config.multithread = (uint8_t)atoi(optarg);
-        }
+            case 'x':
+                config.starting_c = &optarg;
+                config.starting_c_complex = complex_from_str(optarg);
+                break;
 
-        else if (strcmp(name, "starting-z") == 0) {
-            config.starting_z = &optarg;
-            config.starting_z_complex = complex_from_str(optarg);
-        }
+            case 's':
+                config.file_path_save = &optarg;
+                break;
 
-        else if (strcmp(name, "starting-c") == 0) {
-            config.starting_c = &optarg;
-            config.starting_c_complex = complex_from_str(optarg);
-        }
+            case 'h':
+                config.help_wanted = 1;
+                break;
 
-        else if (strcmp(name, "save") == 0) {
-            config.file_path_save = &optarg;
-        }
-
-        else if (strcmp(name, "help") == 0) {
-            config.help_wanted = 1;
+            case '?':
+            default:
+                fprintf(stderr, "[error] Unknown or malformed option.\n");
+                config.help_wanted = 1;
+                break;
         }
     }
 

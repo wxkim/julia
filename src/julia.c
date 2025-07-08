@@ -30,6 +30,9 @@ static int compute_escape(int width, int height, complex_t cs, complex_t c0) {
 }
 
 void julia_compute(frame_dimensions_t* f, pixel_t* framebuffer, uint32_t max_iter) {
+	#ifdef DEBUG
+		printf("Generating Julia Set\n");
+	#endif
 
 	complex_t c0 = {
 		.re = 0.355F,
@@ -50,6 +53,10 @@ void julia_compute(frame_dimensions_t* f, pixel_t* framebuffer, uint32_t max_ite
 }
 
 void mandelbrot_compute(frame_dimensions_t* f, pixel_t* framebuffer, uint32_t max_iter) {
+	#ifdef DEBUG
+		printf("Generating Mandelbrot Set\n");
+	#endif
+	
 	complex_t z0 = {
 		.re = 0.0F,
 		.im = 0.0F 

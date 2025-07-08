@@ -20,6 +20,7 @@ extern args_t config;
 
 int main(int argc, char** argv) {
     parse_args(argc, argv);
+    print_config_summary();
     
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE);
@@ -60,6 +61,7 @@ void init_rendering(int w, int h, fractal_compute_fn_t fn) {
     frame_dimensions_t* regions = frame_delegation(num_threads, w, h);
 
     thread_arg_t thread_args[num_threads];
+
     for (int i = 0; i < num_threads; ++i) {
         thread_args[i] = (thread_arg_t){
             .thread_id = i,
@@ -86,13 +88,17 @@ void reshape_wrapper(int w, int h) {
     frame_dimensions_t* regions = frame_delegation(num_threads, w, h);
 
     thread_arg_t thread_args[num_threads];
+
+    fractal_compute_fn_t compute_fn = (config.fractal_type == FRACTAL_JULIA)
+        ? julia_compute : mandelbrot_compute;
+
     for (int i = 0; i < num_threads; ++i) {
         thread_args[i] = (thread_arg_t){
             .thread_id = i,
             .max_iter = 1000,
             .frame_dimensions = regions[i],
             .framebuffer = framebuffer,
-            .fractal_type_fn = julia_compute
+            .fractal_type_fn = compute_fn
         };
     }
 
